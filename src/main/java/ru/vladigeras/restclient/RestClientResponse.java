@@ -8,9 +8,9 @@ import org.springframework.http.HttpStatus;
 public class RestClientResponse<T> {
 	private T body;
 	private HttpStatus status;
-	private Object error;
+	private String error;
 
-	public RestClientResponse(T body, HttpStatus status, Object error) {
+	public RestClientResponse(T body, HttpStatus status, String error) {
 		this.body = body;
 		this.status = status;
 		this.error = error;
@@ -24,7 +24,7 @@ public class RestClientResponse<T> {
 		return status;
 	}
 
-	public Object getError() {
+	public String getError() {
 		return error;
 	}
 }

@@ -20,7 +20,7 @@ import java.util.Map;
  * @author vladi_geras on 13.05.2019
  */
 @RunWith(SpringRunner.class)
-@SpringBootTest(classes = RestTemplateService.class)
+@SpringBootTest(classes = {RestTemplateClientConfig.class, RestTemplateService.class})
 public class RestTemplateServiceTest {
 
 	private static final String TEST_API_DOMAIN = "https://reqres.in/api";
@@ -35,7 +35,7 @@ public class RestTemplateServiceTest {
 				.put("email", "eve.holt@reqres.in")
 				.put("password", "pistol");
 
-		RestClientResponse<TestRegistrationResponse> response = restTemplateService.send(url, HttpMethod.POST, null, body, TestRegistrationResponse.class);
+		RestClientResponse<TestRegistrationResponse> response = restTemplateService.send(url, HttpMethod.POST, null, Collections.emptyMap(), body, TestRegistrationResponse.class);
 		Assert.assertNotNull(response.getBody());
 		Assert.assertEquals(HttpStatus.OK, response.getStatus());
 		Assert.assertNull(response.getError());
@@ -55,7 +55,7 @@ public class RestTemplateServiceTest {
 	@Test
 	public void sendSuccessfulGetRequest() {
 		String url = TEST_API_DOMAIN + "/users/2";
-		RestClientResponse<TestUserReponse> response = restTemplateService.send(url, HttpMethod.GET, null, Collections.emptyMap(), TestUserReponse.class);
+		RestClientResponse<TestUserReponse> response = restTemplateService.send(url, HttpMethod.GET, null, Collections.emptyMap(), null, TestUserReponse.class);
 		Assert.assertNotNull(response.getBody());
 		Assert.assertEquals(HttpStatus.OK, response.getStatus());
 		Assert.assertNull(response.getError());
@@ -64,7 +64,7 @@ public class RestTemplateServiceTest {
 	@Test
 	public void sendErrorGetRequest() {
 		String url = TEST_API_DOMAIN + "/users/23";
-		RestClientResponse<TestUserReponse> response = restTemplateService.send(url, HttpMethod.GET, null, Collections.emptyMap(), TestUserReponse.class);
+		RestClientResponse<TestUserReponse> response = restTemplateService.send(url, HttpMethod.GET, null, Collections.emptyMap(), null, TestUserReponse.class);
 		Assert.assertEquals(HttpStatus.NOT_FOUND, response.getStatus());
 		Assert.assertNotNull(response.getError());
 	}
@@ -75,7 +75,7 @@ public class RestTemplateServiceTest {
 		Map<String, String> params = new HashMap<>();
 		params.put("page", "2");
 
-		RestClientResponse<String> response = restTemplateService.send(url, HttpMethod.GET, null, params, String.class);
+		RestClientResponse<String> response = restTemplateService.send(url, HttpMethod.GET, null, params, null, String.class);
 		Assert.assertNotNull(response.getBody());
 		Assert.assertEquals(HttpStatus.OK, response.getStatus());
 		Assert.assertNull(response.getError());
@@ -84,7 +84,7 @@ public class RestTemplateServiceTest {
 	@Test
 	public void sendSuccessfulDeleteRequest() {
 		String url = TEST_API_DOMAIN + "/users/2";
-		RestClientResponse<String> response = restTemplateService.send(url, HttpMethod.DELETE, null, Collections.emptyMap(), String.class);
+		RestClientResponse<String> response = restTemplateService.send(url, HttpMethod.DELETE, null, Collections.emptyMap(), null, String.class);
 		Assert.assertEquals(HttpStatus.NO_CONTENT, response.getStatus());
 		Assert.assertNull(response.getError());
 	}
@@ -96,7 +96,7 @@ public class RestTemplateServiceTest {
 				.put("name", "morpheus")
 				.put("job", "zion resident");
 
-		RestClientResponse<String> response = restTemplateService.send(url, HttpMethod.PUT, null, body, String.class);
+		RestClientResponse<String> response = restTemplateService.send(url, HttpMethod.PUT, null, Collections.emptyMap(), body, String.class);
 		Assert.assertNotNull(response.getBody());
 		Assert.assertEquals(HttpStatus.OK, response.getStatus());
 		Assert.assertNull(response.getError());
